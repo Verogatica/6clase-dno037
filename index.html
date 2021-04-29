@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Diseño y nuevos medios, segunda versión remota">
+        <link href="style.css" rel="stylesheet" />
+        <title>DNO037vR2 &#128211;</title>
+    </head>
+    <body class="portada">
+        <header>
+            <h1>Resumen</h1>
+            <nav id="menu">
+                <ul>
+                    <li><a href="index.html">Vue.js</a></li>
+                    <li><a href="page-1.html">Chart.js + jQuery</a></li>
+                    <li><a href="page-2.html">Leaflet + Papa Parse</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section id="aqui">
+                <div v-for="contenido in contenidos">
+                    <img v-bind:src="contenido.image" v-bind:alt="contenido.title" />
+                    <h3 v-cloak><a v-bind:href="contenido.link" target="_blank">{{ contenido.title }}</a></h3>
+                    <p v-cloak>{{ contenido.text }}</p>
+                </div>
+            </section>
+        </main>
+        <footer>
+             <p><a href="https://github.com/Verogatica"> Vero Gatica</a> <a href="https://github.com/profesorfaco/dno037-2021"> - Diseño y Nuevos Medios</a></p>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+        <script>
+            document.getElementsByTagName("a")[0].style.textDecorationLine = "underline";
+            const content = {
+                data() {
+                    return {
+                        // reemplaza cada "images/loren-ipsum.png" por una imagen pertinente
+                        // reemplaza cada "#"" con la URL del repositorio que creaste para tal clase
+                        contenidos: [
+                            { image: "images/clase1.png", title: "Clase 01", link: "https://verogatica.github.io/1_clase_dno037/", text: "Para reconocer HTML, CSS y JS" },
+                            { image: "images/clase2.png", title: "Clase 02", link: "https://verogatica.github.io/2clase-dno037/", text: "Para reconocer JS a través de p5.js" },
+                            { image: "images/clase3.png", title: "Clase 03", link: "https://verogatica.github.io/clase-3-dno037/index.html", text: "Evaluación Nº1 - HTML, CSS y p5.js" },
+                            { image: "images/clase4.png", title: "Clase 04", link: "https://verogatica.github.io/4clase_dno037/index.html", text: "Para comprender el uso de variables en JS" },
+                            { image: "images/clase5.png", title: "Clase 05", link: "https://verogatica.github.io/5clase_dno037/", text: "Para comprender el uso de Papa Parse y Charts.js" },
+                            { image: "images/clase6.png", title: "Clase 06", link: "https://verogatica.github.io/6clase-dno037/index.html", text: "Para comprender el uso de jQuery y Leaflet" },
+                            { image: "images/clase7.png", title: "Clase 07", link: "#", text: "Para reconocer el potencial de Vue.js" },
+                        ],
+                    };
+                },
+            };
+            Vue.createApp(content).mount("#aqui");
+        </script>
+    </body>
+</html>

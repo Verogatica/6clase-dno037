@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Diseño y nuevos medios, segunda versión remota">
+        <link href="style.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+        <title>DNO037vR2 &#128211;</title>
+    </head>
+    <body>
+        <header>
+            <h1>Resumen</h1>
+            <nav id="menu">
+                <ul>
+                    <li><a href="index.html">Vue.js</a></li>
+                    <li><a href="page-1.html">Chart.js + jQuery</a></li>
+                    <li><a href="page-2.html">Leaflet + Papa Parse</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="page">
+            <h2>Titanic</h2>
+            <div id="mapa" style="width: 100%; height: 50vh;"></div>
+        </main>
+        <footer>
+            <p><a href="https://github.com/Verogatica"> Vero Gatica</a> <a href="https://github.com/profesorfaco/dno037-2021"> - Diseño y Nuevos Medios</a></p>
+        </footer>
+        <script>
+            document.getElementsByTagName("a")[2].style.textDecorationLine = "underline";
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js" integrity="sha512-rKFvwjvE4liWPlFnvH4ZhRDfNZ9FOpdkD/BU5gAIA3VS3vOQrQ5BjKgbO3kxebKhHdHcNUHLqxQYSoxee9UwgA==" crossorigin="anonymous"></script>
+
+        <script>
+            Papa.parse("https://gist.githubusercontent.com/michhar/2dfd2de0d4f8727f873422c5d959fff5/raw/fa71405126017e6a37bea592440b4bee94bf7b9e/titanic.csv", {
+                download: true,
+                header: true,
+                dynamicTyping: true,
+                complete: function (respuesta) {
+                    console.log(respuesta);
+                    var datos = respuesta.data;
+                    var Southampton = [];
+                    var Cherburgo = [];
+                    var Queenstown = [];
+                    var Southamptonf = [];
+                    var Cherburgof = [];
+                    var Queenstownf = [];
+
+                    datos.forEach(function (pasajero, i) {
+                        if (pasajero.Embarked == "S") {
+                            Southampton.push(pasajero);
+                        } else if (pasajero.Embarked == "C") {
+                            Cherburgo.push(pasajero);
+                        } else {
+                            Queenstown.push(pasajero);
+                        }
+                    });
+
+                    console.log(Southampton.length);
+                    console.log(Cherburgo.length);
+                    console.log(Queenstown.length);
+
+                  Southampton.forEach(function(pasajero, i) {
+                        if (pasajero.Sex == "female") {
+                            Southamptonf.push(pasajero);
+                        }
+                    });
+
+                    Cherburgo.forEach(function(pasajero, i) {
+                        if (pasajero.Sex == "female") {
+                            Cherburgof.push(pasajero);
+                        }
+                    });
+
+                    Queenstown.forEach(function(pasajero, i) {
+                        if (pasajero.Sex == "female") {
+                            Queenstownf.push(pasajero);
+                        }
+                    });
+
+
+                    console.log(Southamptonf.length);
+                    console.log(Cherburgof.length);
+                    console.log(Queenstownf.length);
+
+                    var miMapa = L.map("mapa").setView([46.1979,-26.0280], 4);
+
+                    L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
+                        maxZoom: 18,
+                        id: "mapbox/dark-v10",
+                        tileSize: 512,
+                        zoomOffset: -1,
+                    }).addTo(miMapa);
+
+                    var estilo = { color: "rgb(127, 226, 109)", weight: 1.5, fillColor: "rgb(127, 226, 109)", fillOpacity: 1 };
+
+                    var estilo2 = { color: "rgb(239, 123, 184)", weight: 1.5, fillColor: "rgb(239, 123, 184)", fillOpacity: 1 };
+
+                    L.circle([50.8965, -1.3968], Southampton.length * 160, estilo).addTo(miMapa).bindPopup("En Southampton embarcaron " + Southampton.length + " personas");
+
+                    L.circle([49.659072, -1.611729], Cherburgo.length * 160, estilo).addTo(miMapa).bindPopup("En Cherburgo embarcaron " + Cherburgo.length + " personas");
+
+                    L.circle([51.851, -8.2967], Queenstown.length * 160, estilo).addTo(miMapa).bindPopup("En Queenstown embarcaron " + Queenstown.length + " personas");
+
+                     L.circle([50.8965, -1.3968], Southamptonf.length * 160, estilo2).addTo(miMapa).bindPopup( + Southamptonf.length + " fueron mujeres");
+
+                    L.circle([49.659072, -1.611729], Cherburgof.length * 160, estilo2).addTo(miMapa).bindPopup( + Cherburgof.length + " fueron mujeres");
+
+                    L.circle([51.851, -8.2967], Queenstownf.length * 160, estilo2).addTo(miMapa).bindPopup( + Queenstownf.length + " fueron mujeres");
+
+                  var marcador = L.icon({
+                  iconUrl: 'images/titanic.png',
+
+                  iconSize:     [42, 45],
+                });
+
+
+                 circle = L.marker([41.731944, -49.945833], {icon: marcador})
+                    .addTo(miMapa) .bindPopup("Hundimiento del Titanic");
+                  
+
+                },
+            });
+
+        </script>
+    </body>
+</html>
